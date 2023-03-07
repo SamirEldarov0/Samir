@@ -1,0 +1,87 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lesson3
+{
+    internal class Program
+    {
+            static void Main(string[] args)
+        {
+            #region
+            //implicit or auto conversion
+            byte a = 9;
+            short b = a;
+            int c = b;
+            long d = c;
+            //explicit or manual conversion
+            int g = 300;
+            byte f = (byte)g;
+            Console.WriteLine(f);//300-256=44
+            //Console.WriteLine(double.MaxValue);
+
+            unchecked
+            {
+                int v1 = 50000;
+                int v2 = int.Parse(Console.ReadLine());
+                int v3 = v1 * v2;
+                Console.WriteLine(v3);
+            }
+            //Typename.Parse() and typename.TryParse()
+            int s = int.Parse("899");
+            long lo = int.Parse("7899");
+            bool varr = int.TryParse(Console.ReadLine(), out int result);//bool = var
+            bool varr2 = int.TryParse(Console.ReadLine(), out int j);
+            var z = long.TryParse(Console.ReadLine(), out long l);
+            Console.WriteLine(varr + "" + result);
+
+            //short dd=Int16.Parse(Console.ReadLine());
+            //convert
+            int r = Convert.ToInt32(Console.ReadLine());
+
+            //object(reference type) ------ Butun tipler
+            Console.Write("sajsa=");
+            object q = Console.ReadLine();
+        
+            //ToString
+            string str = q.ToString();
+            #endregion
+
+            //Operatorlar
+            /*Arithmetic operators +,-,*,/,%,++,--
+              Relational operatros ==,!=,>,<,>=
+              Logical op &&,||,!
+              Bitwise op  &,|,^
+              Assignment op  =,+=,-=,/=,*=,%=
+              Miscellaneous op  sizeof(),typeof(),?:,is,as and *,
+            */
+            {
+                int t = sizeof(byte);
+                Console.WriteLine(t);
+            }
+            {
+                int x = 9;
+                bool results = x.GetType() == typeof(int);
+                Type w = results.GetType();
+                Console.WriteLine(w);
+                bool bl = w is int;
+                //ancaq reference tipler null deyer ala bilir  ???!
+                int? er = null;//intden ferqi odurki null deyeride alir
+                object re = null;
+                //if (er.HasValue)
+                //{
+                //    int j=er.Value;
+                //    Console.WriteLine("swkwskwssw="+j);
+                //}
+                long? L= 8;
+                int? ytt =L as int?;
+                Console.WriteLine(ytt);
+
+                //Stack,Heap...
+            }
+
+        }
+    }
+}
