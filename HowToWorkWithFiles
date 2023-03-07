@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HowToWorkWithFiles
+{
+    internal class Program
+    {
+        const string DateFormat = "yyyy-MM-dd";//3
+        const string MyDirectoryMYDB2 = "C:\\Users\\Dell\\Desktop\\C#lessons\\MYDB2";//4
+        static void Main(string[] args)
+        {
+            Console.WriteLine("What do you want to do ?\n1 - Creating a student\n2 - Seeing all of the registered students");
+            Console.WriteLine();
+            //int[] choice = new int[2] { 1, 2 };
+            byte option = Byte.Parse(Console.ReadLine());
+            switch (option)
+            {
+                case 1:
+                    Student student = CreateStudent();
+                    RegisterStudentInMYDB2(student);
+                    break;
+                case 2:
+                    Student[] students = GetStudent();
+                    PrintStudents(students);
+                    break;
+                default:
+                    throw new ArgumentException(nameof(option));
+                    break;
+            }
+        }
+        public static Student CreateStudent()//2
+        {
+            Student student = new Student();
+            Console.Write($"{nameof(student.Id)} : ");
+            student.Id = int.Parse(Console.ReadLine());//Guid.NewGuid();
+            Console.WriteLine();
+            Console.Write($"{nameof(student.Name)} : ");
+            student.Name = Console.ReadLine();
+            Console.WriteLine();
+            Console.Write($"{nameof(student.Surname)} : ");
+            student.Surname = Console.ReadLine();
+            Console.WriteLine();
+            Console.Write($"{nameof(student.DateOfBirth)} {DateFormat} : ");
+            student.DateOfBirth = DateTime.Parse(Console.ReadLine());
+            return student;
+        }
+        public static void RegisterStudentInMYDB2(Student student)//5
+        {
+            string file = Path.Combine(MyDirectoryMYDB2, student.Id+".txt");
+            if (File.Exists(file))
+            {
+                Console.WriteLine("This student has already been registered");
+            }
+            else
+            {
+                var FileText=$"Name : {student.Name}\n"+
+                             $"Surname : {student.Surname}\n"+
+                             $"DateOfBirth {DateFormat} : {student.DateOfBirth.ToString(DateFormat)}";
+                File.WriteAllText(file, FileText);
+                Console.WriteLine("Student was succesfuly registered.");
+            }
+        }
+        public static Student[] GetStudent()//6
+        {
+            var directory = new DirectoryInfo(MyDirectoryMYDB2);
+            var files = directory.GetFiles();
+            Student[] students = new Student[100];
+            int i = 0;
+            foreach (var file in files)
+            {
+                var FileLine = File.ReadAllLines(file.FullName);
+                Student student = new Student();
+                student.Name = FileLine[0].Split(':')[1].Trim();
+                student.Surname = FileLine[1].Split(':')[1].Trim();
+                student.DateOfBirth = DateTime.Parse(FileLine[2].Split(':')[1].Trim());
+                students[i] = student;
+                i++;
+            }
+            return students;
+        }
+        public static void PrintStudents(Student[] students)//8
+        {
+            foreach (var item in students)
+            {
+                if (item==null)
+                {
+                    break;
+                }
+                else
+                {
+                    PrintStudent(item);
+                    Console.WriteLine("---------------");
+                }
+            }
+        }
+        public static void PrintStudent(Student student)//7
+        {
+            Console.WriteLine($"{nameof(student.Name)} : {student.Name}");
+            Console.WriteLine($"{nameof(student.Surname)} : {student.Surname}");
+            Console.WriteLine($"{nameof(student.DateOfBirth)} : {student.DateOfBirth.ToString(DateFormat)}");
+        }
+    }
+    public class Student//1
+    {
+        public int Id { get; set; }//Guid
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public DateTime DateOfBirth { get; set; }
+    }
+}
