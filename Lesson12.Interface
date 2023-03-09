@@ -1,0 +1,102 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lesson12.Interface
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            var config = File.ReadAllText("C:\\Users\\Dell\\Desktop\\C#lessons\\MYDB\\config.txt");
+            IPersonVisualizer personVisualizer;
+            //switch (config)
+            //{
+            //    case "1":
+            //        personVisualizer = new PersonVisualizer1();
+            //        break;
+            //    case "2":
+            //        personVisualizer = new PersonVisualizer2();
+            //        break;
+            //    default:
+            //        Console.WriteLine();
+            //        break;
+            //}
+            if (config == "1")
+            {
+                personVisualizer = new PersonVisualizer1();
+            }
+            else
+            {
+                personVisualizer = new PersonVisualizer2();
+            }
+            Person person = new Person(personVisualizer)
+            {
+                Id = 1,
+                FirstName = "Samir",
+                LastName = "Eldarov"
+            };
+            //person.PrintPerson1();
+            //Console.WriteLine();
+            //Console.WriteLine();
+            //person.PrintPerson2();
+
+            person.PrintPerson();
+            Console.ReadKey();
+        }
+    }
+    public class Person
+    {
+        private readonly IPersonVisualizer _personVisualizer;
+
+        public Person(IPersonVisualizer personVisualizer)
+        {
+            _personVisualizer = personVisualizer;
+        }
+        public int Id { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+
+        public void PrintPerson()//Birinci musterinin orderi
+        {
+            //PersonVisualizer2 personVisualizer = new PersonVisualizer2();//Ancaqyenede person class-i deyisir         //2
+            _personVisualizer.PrintPerson(this);
+            //Console.WriteLine($"{nameof(Id)} : {Id}");                  //1
+            //Console.WriteLine($"{nameof(LastName)} : {LastName}");
+            //Console.WriteLine($"{nameof(FirstName)} : {FirstName}");
+        }
+
+        //public void PrintPerson2()//Ikinci musteriin isteyi
+        //{
+        //    Console.WriteLine($"Person {nameof(Id)} - {Id}");
+        //    Console.WriteLine($"Person {nameof(LastName)} - {LastName}");
+        //    Console.WriteLine($"Person {nameof(FirstName)} - {FirstName}");
+        //}
+    }
+    public class PersonVisualizer1:IPersonVisualizer
+    {
+        public void PrintPerson(Person person)//Birinci musterinin isteyi
+        {
+            Console.WriteLine($"{nameof(person.Id)} : {person.Id}");
+            Console.WriteLine($"{nameof(person.LastName)}  :  {person.LastName}");
+            Console.WriteLine($"{nameof(person.FirstName)}  :  {person.FirstName}");
+        }
+    }
+    public class PersonVisualizer2:IPersonVisualizer
+    {
+        public void PrintPerson(Person person)//Ikinci musteriin isteyi
+        {
+            Console.WriteLine($"Person {nameof(person.Id)} - {person.Id}");
+            Console.WriteLine($"Person {nameof(person.LastName)} - {person.LastName}");
+            Console.WriteLine($"Person {nameof(person.FirstName)} - {person.FirstName}");
+        }
+    }
+    public interface IPersonVisualizer
+    {
+        void PrintPerson(Person person);
+
+    }
+}
