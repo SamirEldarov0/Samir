@@ -1,0 +1,97 @@
+using Microsoft.Win32;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Mail;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lesson15.Revision2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Array,ArrayList,List,Dictionary,Stack,Queue,Generic class to accept all types of data types(public class DataCollection<T>)
+            Queue<int> queue = new Queue<int>();
+            int queueCount = queue.Count;
+            queue.Enqueue(1);
+            queue.Enqueue(2);
+            queue.Enqueue(3);
+            queue.Dequeue();//queue(novbe)-nin ust(top)-daki elementini silir
+            Console.WriteLine(queue.Dequeue());
+            
+            Stack<int> stack = new Stack<int>();
+            stack.Push(1);
+            stack.Push(2);
+            stack.Push(3);
+            stack.Pop();//en son elementi silir
+            Console.WriteLine(stack.Pop());
+            Console.WriteLine(stack.Pop());
+
+            Stack<int> stack2 = new Stack<int>();
+            stack.Push(1);
+            stack2.Push(2);
+            stack2.Push(3);
+            bool bl1=stack2.Contains(1);
+            double avarage=stack2.Average();
+            Type type=stack2.GetType();
+            bool bl2=stack2.Any();
+            //stack2.AsQueryable(); I don'tknow this one...
+            //Console.WriteLine(bl2);
+
+            ArrayList arrayList = new ArrayList();
+            arrayList.Add(11);
+            arrayList.Add(12);
+            arrayList.Add(13);
+            int[] array = new int[3];
+            arrayList.CopyTo(array);
+            //Console.WriteLine(array[2]);
+            //Console.WriteLine(arrayList.Capacity);
+            //Console.WriteLine(arrayList.Count);
+            //Console.WriteLine(arrayList.IndexOf(13));
+            //Console.WriteLine(arrayList.IsReadOnly);
+
+            //Dictionary
+            Dictionary<int, string> myDictionary = new Dictionary<int, string>();
+            myDictionary.Add(1, "Samir");
+            myDictionary.Add(2, "Fariz");
+            myDictionary.Add(3, "Agabek");
+            Console.WriteLine(myDictionary[3]);//Agabek
+            foreach (var item in myDictionary)
+            {
+                Console.WriteLine(item.Key);
+            }
+            Dictionary<int, Student> myStudent = new Dictionary<int, Student>();
+            Student student1 = new Student()
+            {
+                Id = 1,
+                Name = "Samir",
+                DateOfBirth = DateTime.Now.AddYears(-20)
+            };
+            myStudent.Add(student1.Id, student1);
+            Student student2 = new Student
+            {
+                Id = 2,
+                Name = "Agabek",
+                DateOfBirth = DateTime.Now.AddYears(-23)
+            };
+            Console.WriteLine("I look for a student with this Id : ");
+            int studentId = int.Parse(Console.ReadLine());
+            if (myStudent.ContainsKey(studentId))
+            {
+                var foundUser = myStudent[studentId];
+                Console.WriteLine(foundUser);
+            }
+
+            Console.ReadKey();
+        }
+    }
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime DateOfBirth { get; set; }
+    }
+}
