@@ -1,0 +1,95 @@
+using Newtonsoft.Json;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace Lesson11
+{
+    internal class Program
+    {
+        static async /*Task*/ void Main1(string[] args)
+        {
+            //https://apipheny.io/free-api/
+            //C#-da sadə HTTP sorğular, JSON nədir və necə istifadə olunur, "struct" və "class" fərqləri
+            //web-e request gondermek,basqasinin yaratdigiapi-ni consume etmek
+            //HTTP-İnternet şəbəkəsində istifadə olunan protokoldur. HTTP veb-səhifələri İnternetdən çağırmaq üçün bir mexanizmdir.
+            //Butun saytlar http protokolu uzerinden isleyir
+            //http-standart protokoldur,https -secure http protokoludur.Onun uzerinden geden butun contentler sifrelenir,elaqe tehlukesisdir
+            //kimse desifreleme yolunu tapsa melumatlari gore biler
+            //https://catfact.ninja/fact bu protokol uzerindeki api-leriozterefimizde nece istifade ede bilerik
+            bool iscontinue;
+            const string ApiUrl = "https://catfact.ninja/fact";//24-cu setr,urldeki sekli,fayli download et,url-e fayli upload ele,url-e nu cur User datasi insert et
+            //vebe request gondermek ucun HttpClient esas class
+            HttpClient client = new HttpClient();
+            do
+            {                           //sekilde ola biler
+                var result =await client.GetStringAsync(ApiUrl);//Butipli methodlarin neticesini gozlemek ucun await yazmaq lazmdir,netice gelenden sonra asagi0 kec
+                //Eks halda onugozlemeden asagi kecir
+                var catfact=JsonConvert.DeserializeObject<CatFact>(result);
+                var u= (CatFact)JsonConvert.DeserializeObject(result,typeof(CatFact));
+                Console.WriteLine(catfact.Fact+"\n"+"Do u wanna continue?");//writeline statik
+                iscontinue=Convert.ToBoolean(Console.ReadLine());
+            }
+            while (true);
+
+            //{"fact":"Approximately 24 cat skins can make a coat.","length":43}
+            //CSON datani ifade etmek ucun dil vasite,meselen, API-ni yazan adam Javada yazp,men onu c#da yazram.Bu dillerin bir biri ile data alis verisi etmesiucun
+            //ortaq datani ifade etme formasi olmalidir
+            //{ "fact":"Approximately 24 cat skins can make a coat.","length":43}//json-2 field string ve int,2 value var
+            //Json-la islemek ucun her bir dilin funksiyanalligi var
+
+            //Class yarat gelen datani deserialize et,jsondan c# terefe cevr
+        }
+        static async /*Task*/ void Main(string[] args)
+        {
+            User user = new User()//moterizeler olmasada olar
+            {
+                Name = "Samir",
+                Age = 20,
+                isStudent = true,
+                Parent = new Person
+                {
+                    Name = "Ayaz",
+                    DateOfBirth = new DateTime(1970, 4, 1)
+                },
+                Children = new Person[]
+                {
+                    new Person
+                    {
+                        Name="Agabek",
+                        DateOfBirth=DateTime.Parse("2000-20-10")
+                    },
+                    new Person
+                    {
+                        Name="Fariz",
+                        DateOfBirth=DateTime.Parse("2004-31-5")
+                    }   
+                },
+                SuccessYears=new int[] {2015,2018,2023}
+            };
+            var jsonString=JsonConvert.SerializeObject(user,Formatting.Indented);//Indented-seliqeye salir olmasa ard ardaverir Consolda
+            Console.WriteLine(jsonString);
+            Console.ReadKey();
+        }
+        public class User : UserBase
+        {
+            public string Name { get; set; }
+            public bool isStudent { get; set; }
+            public int Age { get; set; }
+            public Person Parent { get; set; }
+            public Person[] Children { get; set; }
+            public int[] SuccessYears;
+        }
+        public class Person
+        {
+            public string Name { get; set; }
+            public DateTime DateOfBirth { get; set; }
+        }
+        internal class CatFact
+        {
+            public string Fact { get; set; }
+            public int Length { get; set; }
+        }
+    }
+
+}
