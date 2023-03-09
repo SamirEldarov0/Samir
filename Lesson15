@@ -1,0 +1,190 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Lesson15
+{
+    internal class Program
+    {
+        private const int V = 1;
+
+        static void Main(string[] args)
+        {
+            //https://learn.microsoft.com/en-us/dotnet/standard/collections/
+            //List kimidir elave coxluqlar kimi uzarinde emeliyyatlar var
+            HashSet<string> myHashSet1 = new HashSet<string>();
+            myHashSet1.Add("Salam");
+            HashSet<string> myHashSet2= new HashSet<string>();
+            myHashSet2.Add("Salam");
+            myHashSet2.Add("Salam2");
+            myHashSet2.ExceptWith(myHashSet1);
+            myHashSet1.UnionWith(myHashSet2);
+            myHashSet1.IntersectWith(myHashSet2);
+            Console.WriteLine();
+            //HashSet listden daha suretli isleyir,axtarus ve s
+        }
+        static void Main2(string[] args)
+        {
+            //QUEUE(FIFO) - novbe sistemi   -i.e. Bankda xidmet ucun novbe aliram,
+            //Priority queue - filan biletdekiler birinci,diger biletler ikinci gelsin-Kredit goturmek isteyenler birinci ves.
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(1);
+            queue.Enqueue(2);
+            queue.Enqueue(3);
+            int queueCount = queue.Count;
+            for (int i = 0; i < queueCount; i++)//queue.Count olduguhalda 2 element capa cixir cunki queue.Count azalir,queue.Peek()
+            {
+                Console.WriteLine("Next queue element is : {0}", queue.Dequeue());//Bank musterini mene ver onun novbesini queueden sil,Dequeue ustune gel izahina bax
+            }
+            for (int i = 0; i < queueCount; i++)
+            {
+                Console.WriteLine("Next queue element is : {0}", queue);//Artiq elementler silinib
+            }
+            //Stack - LIFO
+            Stack<int> stack=new Stack<int>();
+            stack.Push(1);
+            stack.Push(2);
+            stack.Push(3);
+            int stackCount=stack.Count;
+            for (int i = 0; i < stackCount; i++)
+            {
+                Console.WriteLine("Next stack element is : {0}",stack.Pop());//stack.Peek() elementi qaytarir ancaq silmir
+            }
+
+            Console.ReadKey();
+        }
+        static void Main1(string[] args)
+        {
+            //C#-da sadə data strukturlar, "Collections"-lar və "Generics"-lərin istifadəsi
+            //Alqoritm-bir isi heyata kecirmek ucun atilan addimlar toplusudur
+            //Value tip  -->> Reference type boxing,reference -->> value unboxing
+            //Data structur
+            //1)Array
+            int[] array = new int[100];
+            //2)Array-List
+            ArrayList arrayList=new ArrayList();//default 16element,17ci element + olanda arrayi yeniden 32 elementlik yer ayirir
+            //17-ci element + olanda yaddasda yeni yer acilir elemenler ora kopyalanir,100 daxil etdikde 101-cide bu proses bas verir
+            arrayList.Add(1);
+            arrayList.Add(2);
+            arrayList.Add(3);
+            //arrayList.Add("jxjsj");
+            int sum = 0;
+            foreach (var i in arrayList)
+            {
+                sum += (int)i;
+            }
+            Console.WriteLine(sum);
+
+            //List
+            List<int> list = new List<int>(/*capacity*/);
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            //list[3] = 4;
+            list.AddRange(list);//bir nece element + edirem
+            list.Insert(4,6);//5-ci yere 6 add edir
+            int w;
+            w = list.Capacity;//Hal hazirda nece element yaddasda saxlaya biler
+            //list. diger methodlarina bax
+            foreach(var j in list)
+            {
+                Console.WriteLine(j);
+            }
+
+            //Dictionary
+            Dictionary<string, int> regionPeopleCount = new Dictionary<string, int>();//Şəhər və əhalinin sayi    //generic type  //axtaris suretli sekilde bas verir
+            regionPeopleCount.Add("Baku", 3000000);
+            regionPeopleCount.Add("Sumqayit", 700000);
+            regionPeopleCount.Add("Qebele", 500000);
+            regionPeopleCount.Add("Oghuz", 70000);
+
+            foreach (var item in regionPeopleCount)
+            {
+                Console.WriteLine("Region is {0} and people count is {1}",item.Key,item.Value);
+            }
+            //Userin Id-e gore axtaris edirem ve name ve DateOfBirth cap edirem
+            Dictionary<int, User> userDictionary = new Dictionary<int, User>();
+            User user1 = new User()
+            {
+                Id = 1,
+                Name = "Samir",
+                DateOfBirth = DateTime.Now.AddYears(-20)
+            };
+            userDictionary.Add(user1.Id, user1);
+            User user2 = new User()
+            {
+                Id = 2,
+                Name = "Agabek",
+                DateOfBirth = DateTime.Now.AddYears(-23)
+            };
+            userDictionary.Add(user2.Id, user2);
+
+            Console.WriteLine("Enter userId");
+            int userId = int.Parse(Console.ReadLine());
+            if (userDictionary.ContainsKey(userId))
+            {
+                var foundUser = userDictionary[userId];
+                Console.WriteLine(foundUser);
+            }
+            else
+            {
+                Console.WriteLine("User wasn't found with this Id : {0}",userId);
+            }
+            //Other methodhes of userDictionary
+            //userDictionary.//ContainsValue,Clear,Count,GetType,OrderBy,Values,Keys-leri arica list sekilde goturmek olur
+
+            //
+
+            
+
+            //var dataStoreForString = new DataStoreForString()
+            //{
+            //    Data="Hello!"
+            //};
+            //var dataStoreForInt = new DataStoreForInt()
+            //{
+            //    Data = 9
+            //};
+            //DataStore<Double> dataStore = new DataStore<Double>();
+            //dataStore.Data = 9.0f;
+            //var dataStore2 = new DataStore<char>();
+            //dataStore2.Data = 'q';//\n
+            //Console.WriteLine(dataStoreForString.Data);
+
+            Console.ReadKey();
+        }
+    }
+    public class DataStoreForString
+    {
+        public string Data { get; set; }//object
+    }
+    public class DataStoreForInt
+    {
+        public int Data { get; set; }//object int evezine
+    }
+    public class DataStore<T>
+    {
+        public T Data { get; set; }
+    }
+    public class User
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public override string ToString()
+        {
+            return $"Name : {Name} Id : {Id} DateOfBirth : {DateOfBirth}";
+        }
+    }
+    public class DataCollection<T>
+    {
+        private List<T> _items { get; set; }
+        public DataCollection()
+        {
+            _items = new List<T>();
+        }
+    }
+}
