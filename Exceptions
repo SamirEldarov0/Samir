@@ -1,0 +1,126 @@
+using System;
+
+using System.Linq;
+
+using System.Collections;
+
+namespace Abstract_Interface
+
+{
+
+	public static class Program
+	{
+
+		public static void Main()
+
+		{
+
+			int a,b,c=0;
+
+			try
+
+			{
+
+			    int.Parse(Console.ReadLine());	
+
+			}
+
+			catch
+
+			{
+
+			    //ignored	
+
+			}
+
+		try
+
+		{
+
+		    try
+
+			{
+
+				a=int.Parse(Console.ReadLine());
+
+				b=int.Parse(Console.ReadLine());
+
+				c=a/b;
+
+			}
+
+			catch(FormatException exc){
+
+				Console.WriteLine("Please enter the right number");
+
+				throw new FormatException(exc.Message);
+
+			}
+
+			catch(DivideByZeroException exc){
+
+				Console.WriteLine("b cannot be 0");
+
+				//throw new DivideByZeroException(exc.Message);
+
+				throw new OperationRestrictedException("Error",exc,"OperationMessage");
+
+			}
+
+			catch(Exception exc){
+
+				Console.WriteLine("STH WENT WRONG");
+
+				throw;
+
+			}
+
+			finally{
+
+				Console.WriteLine("This will always be shown");
+
+			}	
+
+		}
+
+		catch(Exception exc){
+
+			throw new Exception(exc.Message);
+
+		}
+
+		}
+
+	}
+
+	public class OperationRestrictedException:Exception{
+
+		public string OperationMessage{get;set;}
+
+		public OperationRestrictedException(string message):base(message){
+
+			
+
+		}
+
+		public OperationRestrictedException(string message,Exception innerexc):base(message,innerexc){
+
+			
+
+		}
+
+		public OperationRestrictedException(string message,Exception innerexc,string OperationMessage):this(message,innerexc)
+
+		{
+
+			
+
+		}
+
+	}
+
+	
+
+	
+
+}
